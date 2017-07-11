@@ -38,9 +38,85 @@
         bottom: 18%;
         z-index: 0;
       }
+      .panda {
+        position: absolute;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: black;
+        background-size: cover;
+        color: white;
+        background-image: url(https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Grosser_Panda.JPG/1200px-Grosser_Panda.JPG);
+      }
+      .panda .heading {
+        font-size: 3em;
+        font-weight: 700;
+        width: 100%;
+        text-align: center;
+        margin-top: 0.5em;
+        text-shadow: 0 0 20px black;
+      }
+      .panda .heading.small {
+        font-weight: 400;
+        font-size: 2em;
+      }
+
+      .buttons {
+        position: absolute;
+        bottom: 1em;
+        left: 0;
+        right: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      button {
+        border: none;
+        border-radius: 5px;
+        padding: 0.5em;
+        font-size: 1.5em;
+        font-family: "Helvetica Neue", arial, sans-serif;
+        cursor: pointer;
+        margin: 0.5em;
+        background-color: #1976D2;
+        color: white;
+      }
+      .panda-pokemon {
+        position: absolute;
+        z-index: 2;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: black;
+        background-size: cover;
+        color: white;
+        background-image: url(https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Grosser_Panda.JPG/1200px-Grosser_Panda.JPG);
+      }
+
+      .panda-pokemon .buttons, .panda-pokemon .description {
+        background-color: white;
+        border-color: black;
+        border-style: solid;
+        border-width: 5px;
+        border-radius: 25px;
+        padding: 1em;
+        color: black;
+        margin: 5rem;
+      }
+
+      .panda-pokemon .description {
+        position: absolute;
+        font-family: monospace;
+        font-size: 2em;
+      }
     </style>
     <script>
       var counter = localStorage.counter || 0;
+      var panda = false;
       window.setInterval(() => {
         console.log("saved. " + counter);
         localStorage.counter = counter;
@@ -48,12 +124,99 @@
       function reload() {
         document.querySelector(".counter").innerText = counter;
       }
+      function showPanda() {
+        panda = true;
+        localStorage.panda = true;
+        document.querySelector(".panda").style.display = "block";
+        console.log("panda appear");
+      }
       window.onload = (e) => {
         reload();
+        if (localStorage.panda) {
+          showPanda();
+        }
+        window.setInterval(() => {
+          if (Math.floor(Math.random() * 6) === 0 && !panda) {
+            showPanda();
+          }
+        }, 1000);
       };
       function sanitize() {
         counter++;
         reload();
+      }
+      function hidePanda() {
+        var rand = Math.floor(Math.random() * 10);
+        console.log(rand);
+        if (rand === 0) {
+          panda = false;
+          localStorage.panda = false;
+          document.querySelector(".panda").style.display = "none";
+          console.log("panda leave");
+        }
+      }
+      function killPanda() {
+        document.querySelector(".panda-pokemon").style.display = "block";
+        document.querySelector(".panda-pokemon .description").innerText = "Wild Panda appeared!";
+        setTimeout(() => {
+          document.querySelector(".panda-pokemon .description").innerText = "What will You do?";
+          document.querySelector(".panda-pokemon .general").style.display = "block";
+        }, 2500);
+      }
+      function runPanda() {
+        document.querySelector(".panda-pokemon .description").innerText = "Got away safely!";
+        document.querySelector(".panda-pokemon .general").style.display = "none";
+        setTimeout(() => {
+          document.querySelector(".panda-pokemon").style.display = "none";
+        }, 1000);
+      }
+      function hideFightButtons() {
+        document.querySelector(".panda-pokemon .general").style.display = "block";
+        document.querySelector(".panda-pokemon .fighting").style.display = "none";
+      }
+      function showFightButtons() {
+        document.querySelector(".panda-pokemon .general").style.display = "none";
+        document.querySelector(".panda-pokemon .fighting").style.display = "block";
+      }
+      function dissectionKit() {
+        if (confirm("You don't have a dissection kit. Buy one from a conviniently located and totally not overpriced Barnes & Noble?")) {
+          alert("Insufficient Funds!\nYour life savings: $2.25\nPrice of dissection kit: $10000.00")
+        }
+      }
+      function bagPanda() {
+        document.querySelector(".panda-pokemon .description").innerText = "That's illegal, isn't it?";
+      }
+
+      var pandaMoves = ["Bamboo", "Laziness", "Video Mating Tutorial", "Chronical Laziness"];
+      function hands() {
+        document.querySelector(".panda-pokemon .fighting").style.display = "none";
+        document.querySelector(".panda-pokemon .description").innerText = "You used Hands!";
+        setTimeout(() => {
+          document.querySelector(".panda-pokemon .description").innerText = "It's not very effective...";
+        }, 2000);
+        setTimeout(() => {
+          document.querySelector(".panda-pokemon .description").innerText = "Wild Panda used " + pandaMoves[Math.floor(Math.random() * pandaMoves.length)] + "!";
+        }, 4000);
+        setTimeout(() => {
+          if (Math.floor(Math.random() * 5) >= 4) {
+            document.querySelector(".panda-pokemon .description").innerText = "It's (somehow) super effective!";
+            setTimeout(() => {
+              document.querySelector(".panda-pokemon .description").innerText = "You have been taken aback!";
+            }, 2000);
+            setTimeout(() => {
+              document.querySelector(".panda-pokemon .description").innerText = "You fainted!";
+            }, 2500);
+            setTimeout(() => {
+              document.querySelector(".panda-pokemon").style.display = "none";
+            }, 4500);
+          } else {
+            document.querySelector(".panda-pokemon .description").innerText = "It's not very effective...";
+            setTimeout(() => {
+              document.querySelector(".panda-pokemon .description").innerText = "What will You do?";
+              document.querySelector(".panda-pokemon .general").style.display = "block";
+            }, 2000);
+          }
+        }, 6000);
       }
     </script>
   </head>
@@ -62,5 +225,27 @@
     <p class="counter-small">germs kiled</p>
     <img onclick="sanitize()" class="sanitizer" src="https://image.flaticon.com/icons/svg/133/133407.svg" />
     <p class="product-text">HAND SANITIZER</p>
+    <div class="panda" style="display: none;">
+      <p class="heading">A panda appears.</p>
+      <p class="heading small">Select an option:</p>
+      <div class="buttons">
+        <button style="background-color: #EF6C00" onclick="alert('You cannot leave. You are entranced by the panda\'s cuteness.')">Leave</button>
+        <button onclick="hidePanda()">Stare at it</button>
+        <button style="background-color: #E53935" onclick="killPanda()">Kill it</button>
+      </div>
+    </div>
+    <div class="panda-pokemon" style="display: none;">
+      <p class="description">Wild Panda appeared!</p>
+      <div class="buttons general" style="display: none;">
+        <button onclick="runPanda()">Run</button>
+        <button style="background-color: #E53935" onclick="showFightButtons()">Fight</button>
+        <button style="background-color: #EF6C00" onclick="bagPanda()">Bag</button>
+      </div>
+      <div class="buttons fighting" style="display: none;">
+        <button onclick="hideFightButtons()">Back</button>
+        <button style="background-color: #E53935" onclick="hands()">Hands</button>
+        <button style="background-color: #E53935" onclick="dissectionKit()">Dissection Kit</button>
+      </div>
+    </div>
   </body>
 </html>
