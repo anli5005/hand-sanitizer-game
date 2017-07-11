@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Hand Sanitizer Game!</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      html, body {
+        height: 100%;
+      }
+      body {
+        background-color: rgb(240, 250, 255);
+        padding: 1em;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        font-family: "Helvetica Neue", arial, sans-serif;
+      }
+      .sanitizer {
+        height: 60vh;
+        max-width: 100vw;
+        display: block;
+      }
+      .counter {
+        font-size: 5em;
+        font-weight: 500;
+      }
+      .product-text {
+        position: absolute;
+        color: rgb(255, 255, 255);
+        font-weight: 700;
+        left: calc(50% - 75px);
+        bottom: 18%;
+        z-index: 0;
+      }
+    </style>
+    <script>
+      var counter = localStorage.counter || 0;
+      window.setInterval(() => {
+        console.log("saved. " + counter);
+        localStorage.counter = counter;
+      }, 10000);
+      function reload() {
+        document.querySelector(".counter").innerText = counter;
+      }
+      window.onload = (e) => {
+        reload();
+      };
+      function sanitize() {
+        counter++;
+        reload();
+      }
+    </script>
+  </head>
+  <body>
+    <p class="counter">0</p>
+    <p class="counter-small">germs kiled</p>
+    <img onclick="sanitize()" class="sanitizer" src="https://image.flaticon.com/icons/svg/133/133407.svg" />
+    <p class="product-text">HAND SANITIZER</p>
+  </body>
+</html>
